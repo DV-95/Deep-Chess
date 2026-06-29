@@ -7,24 +7,81 @@ using namespace std;
 
     Students should fill only the solve function below.
 */
+pair<long long, long long> solver (long long scoreA, long long scoreB, vector<long long> a, char turn){
+
+    if(a.size()==0){
+        return make_pair(scoreA,scoreB);
+    }
+    if(a.size()==1){
+        if(turn=='A') scoreA+=a[0];
+        else scoreB+=a[0];
+        return make_pair(scoreA,scoreB);
+    }
+
+    if(a.size()==2){
+        if(turn=='A'){
+            if(a[1]>=0){
+                scoreA+=a[0]+a[1];
+            }
+            else {scoreA+=a[0]; scoreB+=a[1];}
+            return make_pair(scoreA,scoreB);
+        }
+        if(turn=='B'){
+            if(a[1]>=0){
+                scoreB+=a[0]+a[1];
+            }
+            else {scoreB+=a[0]; scoreA+=a[1];}
+            return make_pair(scoreA,scoreB);
+        }
+    }
+    vector<long long> b = a;
+    vector<long long> c = a;
+    
+    b.erase(b.begin());
+    c.erase(c.begin());
+    c.erase(c.begin());
+
+    if(turn=='A'){
+    pair<long long, long long> x = solver(scoreA+a[0],scoreB,b,'B');
+    pair<long long, long long> y = solver(scoreA+a[0]+a[1],scoreB,c,'B');
+    if(x.first>y.first) return x;
+    if(x.first<y.first) return y;
+    else {
+        if(x.second>y.second) return y;
+        else return x;
+    }
+
+    }
+    
+    else{
+    pair<long long, long long> x = solver(scoreA,scoreB+a[0],b,'A');
+    pair<long long, long long> y = solver(scoreA,scoreB+a[0]+a[1],c,'A');
+    if(x.second>y.second) return x;
+    if(x.second<y.second) return y;
+    else {
+        if(x.first>y.first) return y;
+        else return x;
+    }
+
+    }
+
+
+
+}
+
+
 
 string solve(int n, vector<long long> a) {
     // TODO: Fill this function.
     // Return one of: "Player 1" or "Player 2" or "Draw"
-    vector< long long > differences (n);
-    differences[n-1] = a[n-1];
-    differences[n-2] = max(a[n-2] - differences[n-1], a[n-2]+a[n-1]);
+    pair<long long, long long> finalScores = solver(0,0,a,'A');
+    if(finalScores.first>finalScores.second) return "Player 1";
+    if(finalScores.first<finalScores.second) return "Player 2";
 
-    for(int i = n-3; i>=0;i--){
-        differences[i] = max(a[i]-differences[i+1],a[i]+a[i+1]-differences[i+2]);
-    }
-    if(differences[0]>0) return "Player 1";
-    if(differences[0]<0) return "Player 2";
 
 
     return "Draw";
 }
-
 
 static string trim(const string &s) {
     int l = 0, r = (int)s.size() - 1;

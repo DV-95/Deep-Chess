@@ -8,6 +8,7 @@ using namespace std;
     Students should fill only the solve function below.
 */
 
+
 string solve(int n, vector<long long> a) {
     // TODO: Fill this function.
     // Return one of: "Player 1" or "Player 2" or "Draw"
@@ -24,7 +25,6 @@ string solve(int n, vector<long long> a) {
 
     return "Draw";
 }
-
 
 static string trim(const string &s) {
     int l = 0, r = (int)s.size() - 1;
