@@ -76,34 +76,91 @@ class History:
     def is_win(self):
         # check if the board position is a win for either players
         # Feel free to implement this in anyway if needed
-        pass
+        winning_lines = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+        ]
+
+        for line in winning_lines:
+            a, b, c = line
+
+            if (self.board[a] != '0' and
+            self.board[a] == self.board[b] and
+            self.board[b] == self.board[c]):
+                return True
+
+        return False
 
     def is_draw(self):
         # check if the board position is a draw
         # Feel free to implement this in anyway if needed
-        pass
+        variable = False
+        for i in self.board :
+            if (i == '0'):
+                variable = True
+                break
+        if(not(variable) and not(self.is_win())) : return True
+        return False       
+        
+
 
     def get_valid_actions(self):
         # get the empty squares from the board
         # Feel free to implement this in anyway if needed
-        pass
+        a = []
+        for i in range(9):
+            if(self.board[i]=='0') : a.append(i)
+        return a
 
     def is_terminal_history(self):
         # check if the history is a terminal history
         # Feel free to implement this in anyway if needed
-        pass
+        return self.is_win() or self.is_draw()
 
     def get_utility_given_terminal_history(self):
         # Feel free to implement this in anyway if needed
-        pass
+        if (self.is_win()):
+            winning_lines = [
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,3,6],
+            [1,4,7],
+            [2,5,8],
+            [0,4,8],
+            [2,4,6]
+            ]
+
+            for line in winning_lines:
+             a, b, c = line
+
+             if (self.board[a] != '0' and
+                self.board[a] == self.board[b] and
+                self.board[b] == self.board[c]):
+                if(self.board[a]=='x') : return 1
+                else : return -1
+        else : return 0
 
     def update_history(self, action):
         # In case you need to create a deepcopy and update the history obj to get the next history object.
         # Feel free to implement this in anyway if needed
-        pass
+        new_history = copy.deepcopy(self)
+
+        new_history.history.append(action)
+        new_history.board = new_history.get_board()
+        new_history.player = new_history.current_player()
+
+        return new_history
 
 
-def backward_induction(history_obj):
+
+def backward_induction(history_obj, alpha = -math.inf, beta = math.inf):
     """
     :param history_obj: Histroy class object
     :return: best achievable utility (float) for th current history_obj
@@ -122,8 +179,62 @@ def backward_induction(history_obj):
     # actions. But since tictactoe is a PIEFG, there always exists an optimal deterministic strategy (SPNE). So your
     # policy will be something like this {"0": 1, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0} where
     # "0" was the one of the best actions for the current player/history.
-    return -2
     # TODO implement
+
+    if(history_obj.is_terminal_history()) :
+        return history_obj.get_utility_given_terminal_history()
+
+
+    actions = history_obj.get_valid_actions()
+    currplayer = history_obj.current_player()
+
+    if (currplayer == 'x') :
+        utils = - math.inf
+        final_action = actions[0]
+
+
+        for action in actions :
+            new_history = history_obj.update_history(action)
+            utilx = backward_induction(new_history,alpha,beta)
+            if(utilx > utils) : 
+                utils = utilx
+                final_action = action
+            if(utilx > alpha) :
+                alpha = utilx
+            if(alpha>=beta) : break
+
+        history_str = ''.join(map(str, history_obj.history))
+        policy_dict = {}
+        for i in range(9) :
+            policy_dict[str(i)] = 0
+        policy_dict[str(final_action)] = 1
+        strategy_dict_x[history_str] = policy_dict
+        return utils
+    if (currplayer == 'o') :
+        utils = math.inf
+        final_action = actions[0]
+
+
+        for action in actions :
+            new_history = history_obj.update_history(action)
+            utilx = backward_induction(new_history,alpha,beta)
+            if(utilx < utils) : 
+                utils = utilx
+                final_action = action
+            if(utilx<beta):
+                beta = utilx
+            if(alpha>=beta) : break
+
+        history_str = ''.join(map(str, history_obj.history))
+        policy_dict = {}
+        for i in range(9) :
+            policy_dict[str(i)] = 0
+        policy_dict[str(final_action)] = 1
+        strategy_dict_o[history_str] = policy_dict
+        return utils
+
+
+
 
 
 def solve_tictactoe():

@@ -159,20 +159,32 @@ class History:
         return boards_str
 
     def is_win(self):
-        # Feel free to implement this in anyway if needed
-        pass
+        y = self.check_active_boards()
+        for board in y :
+            if (board == 1) : return False
+        else : return True
 
     def get_valid_actions(self):
-        # Feel free to implement this in anyway if needed
-        pass
+        y = []
+        x = self.check_active_boards()
+        z = self.boards
+        for i in range(len(x)) :
+            for j in range(9) :
+                if(x[i]==1 and z[i][j] == "0") : 
+                    y.append(9*i + j)
+        return y
 
     def is_terminal_history(self):
         # Feel free to implement this in anyway if needed
-        pass
+        return self.is_win() or  not len(self.get_valid_actions())
+        
 
     def get_value_given_terminal_history(self):
         # Feel free to implement this in anyway if needed
-        pass
+        n = len(self.history)
+        if(n%2==0) : return 1
+        else : return -1
+
 
 
 def alpha_beta_pruning(history_obj, alpha, beta, max_player_flag):
@@ -190,7 +202,70 @@ def alpha_beta_pruning(history_obj, alpha, beta, max_player_flag):
     global visited_histories_list
     visited_histories_list.append(history_obj.history)
     # TODO implement
-    return -2
+    if(history_obj.is_terminal_history()) :
+        return history_obj.get_value_given_terminal_history()
+
+    if(max_player_flag) :
+        unordered_actions = history_obj.get_valid_actions()
+        actions = []
+        for i in unordered_actions:
+            if i%9==4:
+                actions.append(i)
+        for i in unordered_actions:
+            if i%9==0 or i%9==2 or i%9==6 or i%9==8:
+                actions.append(i)
+        for i in unordered_actions:
+            if i%9==1 or i%9==3 or i%9==5 or i%9==7:
+                actions.append(i)
+        util = -math.inf
+        for i in range(len(actions)) :
+            new_history=history_obj.history.copy()
+            new_history.append(actions[i])
+            new_history_obj = History(history_obj.num_boards,new_history)
+            
+            x = alpha_beta_pruning(new_history_obj,alpha,beta,False)
+            if(x>util):
+                util = x
+            if(x>alpha) :
+                alpha = x
+            if(alpha>=beta):
+                break
+        
+        return util
+    
+    if(not max_player_flag) :
+        unordered_actions = history_obj.get_valid_actions()
+        actions = []
+        for i in unordered_actions:
+            if i%9==4:
+                actions.append(i)
+        for i in unordered_actions:
+            if i%9==0 or i%9==2 or i%9==6 or i%9==8:
+                actions.append(i)
+        for i in unordered_actions:
+            if i%9==1 or i%9==3 or i%9==5 or i%9==7:
+                actions.append(i)
+        util = math.inf
+        for i in range(len(actions)) :
+
+            new_history=history_obj.history.copy()
+            new_history.append(actions[i])
+            new_history_obj = History(history_obj.num_boards,new_history)
+            x = alpha_beta_pruning(new_history_obj,alpha,beta,True)
+            if(x<util):
+                util = x
+            if(x<beta):
+                beta=x
+            if(alpha>=beta):
+                break
+        
+        return util
+
+
+
+
+
+
     # TODO implement
 
 
@@ -207,7 +282,43 @@ def maxmin(history_obj, max_player_flag):
     # the key corresponding to self.boards.
     global board_positions_val_dict
     # TODO implement
-    return -2
+    if(history_obj.is_terminal_history()) :
+        return history_obj.get_value_given_terminal_history()
+    stri = history_obj.get_boards_str()
+    if stri in board_positions_val_dict:
+        return board_positions_val_dict[stri]
+
+    if(max_player_flag) :
+        
+        actions = history_obj.get_valid_actions()
+        util = -math.inf
+        for i in range(len(actions)) :
+            new_history=history_obj.history.copy()
+            new_history.append(actions[i])
+            new_history_obj = History(history_obj.num_boards,new_history)
+            
+            x = maxmin(new_history_obj,False)
+            if(x>util):
+                util = x
+        
+        board_positions_val_dict[stri] = util
+        return util
+    
+    if(not max_player_flag) :
+        actions = history_obj.get_valid_actions()
+        util = math.inf
+        for i in range(len(actions)) :
+
+            new_history=history_obj.history.copy()
+            new_history.append(actions[i])
+            new_history_obj = History(history_obj.num_boards,new_history)
+            x = maxmin(new_history_obj,True)
+            if(x<util):
+                util = x
+        
+        board_positions_val_dict[stri] = util 
+        return util
+
     # TODO implement
 
 
