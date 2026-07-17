@@ -1,0 +1,48 @@
+[Event "1500 testing"]
+[Site "?"]
+[Date "2026.07.15"]
+[Round "1"]
+[White "DiveshEngine"]
+[Black "Stockfish"]
+[Result "0-1"]
+[ECO "A00"]
+[GameDuration "00:07:32"]
+[GameEndTime "2026-07-15T02:01:56.372 India Standard Time"]
+[GameStartTime "2026-07-15T01:54:23.707 India Standard Time"]
+[Opening "Dunst (Sleipner, Heinrichsen) Opening"]
+[PlyCount "64"]
+[TimeControl "40/300"]
+
+1. Nc3 {20s} d5 {0.00/28 7.2s} 2. e3 {11s} e5 {+0.34/26 16s} 3. Qh5 {15s}
+Nf6 {+0.29/23 12s} 4. Qxe5+ {9.0s} Be7 {+0.25/19 3.6s} 5. Nb5 {30s}
+Na6 {+0.48/26 2.8s} 6. Nd4 {41s} Ng4 {+0.47/21 2.9s} 7. Qh5 {31s}
+g6 {+2.90/21 3.4s} 8. Bb5+ {6.0s} Kf8 {+3.09/18 3.7s} 9. Qh3 {4.3s}
+Nxf2 {+3.29/23 4.6s} 10. Qh6+ {2.2s} Kg8 {+3.33/18 1.1s} 11. Kxf2 {4.3s}
+Bh4+ {+3.32/22 5.0s} 12. Kf1 {4.3s} Bg5 {+3.53/19 3.7s} 13. Qxg5 {0.63s}
+Qxg5 {+3.57/24 5.7s} 14. Ngf3 {0.80s} Qe7 {+3.33/28 30s} 15. Bxa6 {7.9s}
+bxa6 {+3.33/23 3.1s} 16. Kg1 {22s} c5 {+3.68/21 9.1s} 17. Nc6 {1.2s}
+Qc7 {+3.78/25 8.5s} 18. Nce5 {1.6s} c4 {+4.07/27 7.7s} 19. d4 {6.7s}
+f6 {+4.02/20 2.9s} 20. Nxg6 {5.4s} hxg6 {+5.95/21 4.6s} 21. c3 {7.5s}
+Bg4 {+6.34/25 7.5s} 22. Nd2 {4.4s} Be2 {+6.62/30 26s} 23. g3 {2.9s}
+Re8 {+7.30/27 5.3s} 24. Kf2 {3.0s} Qe7 {+7.39/22 3.5s} 25. Kxe2 {1.3s}
+Qxe3+ {+11.12/17 7.2s} 26. Kd1 {0.86s} Qe2+ {+M13/60 4.8s} 27. Kc2 {0.62s}
+Qd3+ {+M11/96 5.1s} 28. Kd1 {0.52s} Rh3 {+M9/167 5.3s} 29. Rb1 {2.3s}
+Re2 {+M7/245 1.9s} 30. Ra1 {0.60s} Rhxh2 {+M5/245 0.083s} 31. Rxh2
+Rxh2 {+M3/245 0.016s} 32. Ke1 Qe2# {+M1/245 0.007s, Black mates} 0-1
+
+[Event "1500 testing"]
+[Site "?"]
+[Date "2026.07.15"]
+[Round "1"]
+[White "Stockfish"]
+[Black "DiveshEngine"]
+[Result "*"]
+[GameDuration "00:00:32"]
+[GameEndTime "2026-07-15T02:02:28.951 India Standard Time"]
+[GameStartTime "2026-07-15T02:01:56.449 India Standard Time"]
+[PlyCount "0"]
+[Termination "unterminated"]
+[TimeControl "40/300"]
+
+{No result} *
+
